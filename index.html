@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["averages.csv","guns-polls.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1517,8 +1517,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<h2 id="project-thoughts">Project thoughts</h2>
-<p>I am interested in exploring data related to the adoption of pro-LGBT laws, such as anti-discrimination laws and marriage-equality laws, and public acceptance/support of LGBT people in the US. How long does it take pro-LGBT opinions to reflect in legislation? How do laws not enacted by popular support change support of LGBT measures, such as impact of the Obergefell decision in states that hadn’t enacted marraige equality beforehand? I think this would be interesting to explore, especially in considering whether state or federal laws or more effective in creating pro-LGBT sentiment and better direct lobbying/activist activity.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span><span class='va'>averages</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"averages.csv"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="dataset-description">Dataset description</h2>
+<p>Does being elected from a swing state change how often a congressional member votes in alignment with Trump? I plan to study how often various representatives vote in alignment with Donald Trump’s stated policy positions. I hypothesize that congressional members from swing states will vote closer to the median Trump vote, for both parties relative to the overall party median Trump vote. I expect that these members will, on average, vote closer to the overall median in order to win re-election in a competitive seat where a member must apply to undecided or voters who feel as though they are in the middle of each party ideologically. I’ll be looking at the <code>state</code> and <code>net_trump_vote</code> variables of each member. The <code>net_trump_vote</code> is measured on a scale of -1 to 1, where -1 are more votes against Trump. I also may group these members by <code>state</code> and <code>party</code> and then analyze the <code>net_trump_vote</code> across these groups to get a better understanding of how a member’s party and and state effect their voting patterns. I expect that the difference in the <code>net_trump_vote</code> between the two <code>party</code> groups within a singular swing state will be less than the respective <code>party</code> <code>net_trump_vote</code> in non-swing states. My hypothesis would be disproven if there was no considerable difference in the difference of the <code>net_trump_vote</code> between parties in swing states versus non-swing states.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
