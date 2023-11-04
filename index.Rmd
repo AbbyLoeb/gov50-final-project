@@ -38,7 +38,6 @@ averages |>
   slice_max(avg_agree_pct, n = 50) |>
   ggplot(mapping = aes(x = avg_agree_pct, y = state)) +
   geom_bar(stat = "identity", width = 0.7, fill = "hotpink")
-
 ```
 
 
