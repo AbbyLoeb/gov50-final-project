@@ -34,12 +34,37 @@ averages <- averages |>
   summarize(avg_agree_pct = mean(agree_pct))
 
 averages |>
-  group_by(state) |>
   slice_max(avg_agree_pct, n = 50) |>
   ggplot(mapping = aes(x = avg_agree_pct, y = state)) +
-  geom_bar(stat = "identity", width = 0.7, fill = "hotpink")
+  geom_col() +
+  labs(
+    x = "Average vote percent with Trump by state",
+    y = "State",
+    title = "Average agreement with Trump by state"
+  )
 ```
 
 
 
 
+
+```{r}
+averages <- averages |>
+  group_by(state) |>
+  summarize(avg_agree_pct = mean(agree_pct))
+
+averages |>
+  group_by(state) |>
+  slice_max(avg_agree_pct, n = 50) |>
+  ggplot(mapping = aes(x = avg_agree_pct, y = state)) +
+  geom_bar(stat = "identity", width = 0.5, fill = "green4") +
+  labs(
+    x = "Average vote percent with Trump by state",
+    y = "State",
+    title = "Average agreement with Trump by state"
+  )
+```
+
+These graphs show no obvious pattern based on state alone, with the average Trump vote aligning with the overall political tilt of the specific state. More Democratic states have representatives who tend to vote less with Trump on average, and Republican-leaning states are represented by House members who tend to vote more with Trump on average.
+
+This makes clear that we need to further break down the data in swing states by party and/or member to understand how members from swing states vote differently from other members of their party and whether this correlates with being elected by a district in a swing state or not.
