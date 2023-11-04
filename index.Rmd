@@ -19,4 +19,27 @@ Does being elected from a swing state change how often a congressional member vo
 
 
 
+## Milestone 3
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(dplyr)
+averages <- read_csv("averages.csv")
+averages
+```
+```{r}
+averages <- averages |>
+  group_by(state) |>
+  summarize(avg_agree_pct = mean(agree_pct))
+
+averages |>
+  group_by(state) |>
+  slice_max(avg_agree_pct, n = 50) |>
+  ggplot(mapping = aes(x = avg_agree_pct, y = state)) +
+  geom_bar(stat = "identity", width = 0.7, fill = "hotpink")
+```
+
+
+
 
