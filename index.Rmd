@@ -29,11 +29,11 @@ averages <- read_csv("averages.csv")
 averages
 ```
 ```{r}
-averages <- averages |>
+average_agree <- averages |>
   group_by(state) |>
   summarize(avg_agree_pct = mean(agree_pct))
 
-averages |>
+average_agree |>
   slice_max(avg_agree_pct, n = 50) |>
   ggplot(mapping = aes(x = avg_agree_pct, y = state)) +
   geom_col() +
@@ -47,3 +47,79 @@ averages |>
 These graphs show no obvious pattern based on state alone, with the average Trump vote aligning with the overall political tilt of the specific state. More Democratic states have representatives who tend to vote less with Trump on average, and Republican-leaning states are represented by House members who tend to vote more with Trump on average.
 
 This makes clear that we need to further break down the data in swing states by party and/or member to understand how members from swing states vote differently from other members of their party and whether this correlates with being elected by a district in a swing state or not.
+
+## Milestone 4
+
+```{r}
+averages <- averages |>
+  mutate(swing = case_when(
+    state == "FL" ~ "Swing State", 
+    state == "NC" ~ "Swing State", 
+    state == "OH" ~ "Swing State", 
+    state == "NV" ~ "Swing State", 
+    state == "PA" ~ "Swing State",
+    state == "MI" ~ "Swing State",
+    state == "WI" ~ "Swing State",
+    state == "AZ" ~ "Swing State"
+  )) |>
+  mutate(swing = if_else(is.na(swing), "Not Swing State", "Swing State")) |>
+  mutate(party = case_when(
+    party == "D" ~ "Democrat",
+    party == "Democrat" ~ "Democrat",
+    party == "R" ~ "Republican",
+    party == "Republican"~"Republican",
+    party == "I" ~ "Independent",
+    party == "Independent" ~ "Independent",
+    party == "Libertarian" ~ "Libertarian"
+  )) |>
+  drop_na(net_trump_vote, party)
+averages <- averages |>
+  subset(party == "Democrat" | party == "Republican")
+``` 
+
+
+```{r}
+DiM_party<-averages |>
+  group_by(party) |>
+  summarize(mean_ntv = mean(net_trump_vote)) |>
+  pivot_wider(
+    names_from = party,
+    values_from = mean_ntv
+  )
+
+knitr::kable(DiM_party)
+
+DiM_swing <- averages |>
+  group_by(swing, party) |>
+  summarize(mean_ntv = mean(net_trump_vote)) |>
+  pivot_wider(
+    names_from = swing,
+    values_from = mean_ntv
+  ) |>
+  mutate(ntv_diff = `Swing State` - `Not Swing State`)
+DiM_swing
+knitr::kable(DiM_swing)
+```
+
+```{r}
+averages |>
+  group_by(swing, party) |>
+  summarize(mean_ntv = mean(net_trump_vote)) |>
+  ggplot(aes(x = party, y = mean_ntv, fill = swing)) +
+  geom_col() +
+  scale_fill_manual(values = c(`Swing State` = "goldenrod1", `Not Swing State` = "goldenrod")) +
+  labs(
+    x = "Party of Officeholder",
+    y = "Mean number of votes in accordance with Trump",
+    title = "Average votes in accordance with Trump for 115-117 Congress",
+    caption = "Source: FiveThirtyEight"
+  )
+
+```
+
+
+
+
+
+
+

@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["averages.csv","guns-polls.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["averages.csv","guns-polls.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1554,11 +1554,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>averages</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>average_agree</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>state</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>avg_agree_pct <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>agree_pct</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<span><span class='va'>average_agree</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice_max</a></span><span class='op'>(</span><span class='va'>avg_agree_pct</span>, n <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>avg_agree_pct</span>, y <span class='op'>=</span> <span class='va'>state</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
@@ -1572,7 +1572,123 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p>These graphs show no obvious pattern based on state alone, with the average Trump vote aligning with the overall political tilt of the specific state. More Democratic states have representatives who tend to vote less with Trump on average, and Republican-leaning states are represented by House members who tend to vote more with Trump on average.</p>
 <p>This makes clear that we need to further break down the data in swing states by party and/or member to understand how members from swing states vote differently from other members of their party and whether this correlates with being elected by a district in a swing state or not.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="milestone-4">Milestone 4</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>averages</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>swing <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"FL"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>, </span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"NC"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>, </span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"OH"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>, </span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"NV"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>, </span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"PA"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"MI"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"WI"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"AZ"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span></span>
+<span>  <span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>swing <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>swing</span><span class='op'>)</span>, <span class='st'>"Not Swing State"</span>, <span class='st'>"Swing State"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>party <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span>    <span class='va'>party</span> <span class='op'>==</span> <span class='st'>"D"</span> <span class='op'>~</span> <span class='st'>"Democrat"</span>,</span>
+<span>    <span class='va'>party</span> <span class='op'>==</span> <span class='st'>"Democrat"</span> <span class='op'>~</span> <span class='st'>"Democrat"</span>,</span>
+<span>    <span class='va'>party</span> <span class='op'>==</span> <span class='st'>"R"</span> <span class='op'>~</span> <span class='st'>"Republican"</span>,</span>
+<span>    <span class='va'>party</span> <span class='op'>==</span> <span class='st'>"Republican"</span><span class='op'>~</span><span class='st'>"Republican"</span>,</span>
+<span>    <span class='va'>party</span> <span class='op'>==</span> <span class='st'>"I"</span> <span class='op'>~</span> <span class='st'>"Independent"</span>,</span>
+<span>    <span class='va'>party</span> <span class='op'>==</span> <span class='st'>"Independent"</span> <span class='op'>~</span> <span class='st'>"Independent"</span>,</span>
+<span>    <span class='va'>party</span> <span class='op'>==</span> <span class='st'>"Libertarian"</span> <span class='op'>~</span> <span class='st'>"Libertarian"</span></span>
+<span>  <span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='va'>net_trump_vote</span>, <span class='va'>party</span><span class='op'>)</span></span>
+<span><span class='va'>averages</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>party</span> <span class='op'>==</span> <span class='st'>"Democrat"</span> <span class='op'>|</span> <span class='va'>party</span> <span class='op'>==</span> <span class='st'>"Republican"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>DiM_party</span><span class='op'>&lt;-</span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_ntv <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>net_trump_vote</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span></span>
+<span>    names_from <span class='op'>=</span> <span class='va'>party</span>,</span>
+<span>    values_from <span class='op'>=</span> <span class='va'>mean_ntv</span></span>
+<span>  <span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>DiM_party</span><span class='op'>)</span></span></code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Democrat</th>
+<th style="text-align: right;">Republican</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">-26.12271</td>
+<td style="text-align: right;">22.16893</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>DiM_swing</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>swing</span>, <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_ntv <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>net_trump_vote</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span></span>
+<span>    names_from <span class='op'>=</span> <span class='va'>swing</span>,</span>
+<span>    values_from <span class='op'>=</span> <span class='va'>mean_ntv</span></span>
+<span>  <span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ntv_diff <span class='op'>=</span> <span class='va'>`Swing State`</span> <span class='op'>-</span> <span class='va'>`Not Swing State`</span><span class='op'>)</span></span>
+<span><span class='va'>DiM_swing</span></span></code></pre>
+</div>
+<pre><code># A tibble: 2 × 4
+  party      `Not Swing State` `Swing State` ntv_diff
+  &lt;chr&gt;                  &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;
+1 Democrat               -27.5         -20.5     6.97
+2 Republican              24.1          16.9    -7.18</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>DiM_swing</span><span class='op'>)</span></span></code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">party</th>
+<th style="text-align: right;">Not Swing State</th>
+<th style="text-align: right;">Swing State</th>
+<th style="text-align: right;">ntv_diff</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Democrat</td>
+<td style="text-align: right;">-27.51916</td>
+<td style="text-align: right;">-20.54930</td>
+<td style="text-align: right;">6.969866</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Republican</td>
+<td style="text-align: right;">24.11218</td>
+<td style="text-align: right;">16.93344</td>
+<td style="text-align: right;">-7.178738</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>swing</span>, <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_ntv <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>net_trump_vote</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>party</span>, y <span class='op'>=</span> <span class='va'>mean_ntv</span>, fill <span class='op'>=</span> <span class='va'>swing</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>`Swing State` <span class='op'>=</span> <span class='st'>"goldenrod1"</span>, `Not Swing State` <span class='op'>=</span> <span class='st'>"goldenrod"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
+<span>    x <span class='op'>=</span> <span class='st'>"Party of Officeholder"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"Mean number of votes in accordance with Trump"</span>,</span>
+<span>    title <span class='op'>=</span> <span class='st'>"Average votes in accordance with Trump for 115-117 Congress"</span>,</span>
+<span>    caption <span class='op'>=</span> <span class='st'>"Source: FiveThirtyEight"</span></span>
+<span>  <span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
