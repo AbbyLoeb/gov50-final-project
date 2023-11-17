@@ -1579,12 +1579,19 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>swing <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
 <span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"FL"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>, </span>
 <span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"NC"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>, </span>
-<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"OH"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>, </span>
 <span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"NV"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>, </span>
 <span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"PA"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
 <span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"MI"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
 <span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"WI"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
-<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"AZ"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span></span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"AZ"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"NH"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"IA"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"GA"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"MN"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"CO"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"TX"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"OH"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
+<span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"VA"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>,</span>
 <span>  <span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>swing <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>swing</span><span class='op'>)</span>, <span class='st'>"Not Swing State"</span>, <span class='st'>"Swing State"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>party <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
@@ -1601,6 +1608,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>party</span> <span class='op'>==</span> <span class='st'>"Democrat"</span> <span class='op'>|</span> <span class='va'>party</span> <span class='op'>==</span> <span class='st'>"Republican"</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
+<p>In this chunk, I first made a new variable which denotes whether a state is a swing state or not swing state by the standards of the 2020 Presidential election. For this, I used the states that CNN Politics considered battlegrounds, regardless of margin. I then mutated the party names to standardize them, as some were full party names and some were abbreviated. I dropped all rows without a net Trump vote score, as that is the variable of interest. Finally, I subsetted this data to only include Democrats and Republicans, as both Independents and Libertarians had too few representatives, and these amounts fluctuated across congresses and swing states/not swing states, that I couldn’t conclude much from them.</p>
+<p>I am using the net Trump vote of each legislator to gather my conclusions. This is the difference of the amount of times a legislator in the House has voted with and against Trump’s position on legislation.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>DiM_party</span><span class='op'>&lt;-</span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
@@ -1611,13 +1620,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>    values_from <span class='op'>=</span> <span class='va'>mean_ntv</span></span>
 <span>  <span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>DiM_party</span><span class='op'>)</span></span></code></pre>
+<span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>DiM_party</span>, col.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Avg. net Trump vote, Democrats"</span>, <span class='st'>"Avg. net Trump vote, Republicans"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: right;">Democrat</th>
-<th style="text-align: right;">Republican</th>
+<th style="text-align: right;">Avg. net Trump vote, Democrats</th>
+<th style="text-align: right;">Avg. net Trump vote, Republicans</th>
 </tr>
 </thead>
 <tbody>
@@ -1641,36 +1650,45 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <pre><code># A tibble: 2 × 4
   party      `Not Swing State` `Swing State` ntv_diff
   &lt;chr&gt;                  &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;
-1 Democrat               -27.5         -20.5     6.97
-2 Republican              24.1          16.9    -7.18</code></pre>
+1 Democrat               -29.1         -21.0     8.15
+2 Republican              25.4          18.6    -6.76</code></pre>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>DiM_swing</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>DiM_swing</span>, col.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Party"</span>, <span class='st'>"Avg. Trump Vote, non-swing states"</span>, <span class='st'>"Avg. Trump Vote, swing states"</span>, <span class='st'>"Net Trump Vote Difference"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
 <table>
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 33%" />
+<col style="width: 29%" />
+<col style="width: 25%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">party</th>
-<th style="text-align: right;">Not Swing State</th>
-<th style="text-align: right;">Swing State</th>
-<th style="text-align: right;">ntv_diff</th>
+<th style="text-align: left;">Party</th>
+<th style="text-align: right;">Avg. Trump Vote, non-swing states</th>
+<th style="text-align: right;">Avg. Trump Vote, swing states</th>
+<th style="text-align: right;">Net Trump Vote Difference</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Democrat</td>
-<td style="text-align: right;">-27.51916</td>
-<td style="text-align: right;">-20.54930</td>
-<td style="text-align: right;">6.969866</td>
+<td style="text-align: right;">-29.12091</td>
+<td style="text-align: right;">-20.96842</td>
+<td style="text-align: right;">8.152486</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Republican</td>
-<td style="text-align: right;">24.11218</td>
-<td style="text-align: right;">16.93344</td>
-<td style="text-align: right;">-7.178738</td>
+<td style="text-align: right;">25.36619</td>
+<td style="text-align: right;">18.60211</td>
+<td style="text-align: right;">-6.764082</td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>In the first tibble, which is the 1x2 knitted tibble, I measured the average net Trump vote across all legislators of the Democratic and Republican parties. The average net Trump vote is -26.12 across all Democratic legislators, while the net Trump vote for Republican legislators is 22.17.</p>
+<p>In the second tibble, which is 2x4, candidates of each party are divided on whether they are from a swing or not swing state, with the difference between these groups reported as well. In this, we can see that Democrats in swing states, with an average net Trump vote of -20.97, is 8.15 units lower than those not frmo swing states who had an average of -29.12. We see a similar pattern among Republicans, as those in swing states had an average net Trump vote of 18.6, 6.76 units lower than the average net Trump vote of Republicans not from swing states, who had an average Trump vote of 25.37.</p>
+<p>In each party, we see that Democrats and Republicans from swing states have an average net Trump vote that is closer to 0, or a net Trump vote score that signifies equally voting with or against the Trump policy on a piece of legislation. This may be due to a desire to appeal to voters that are more ready to switch or run in districts that are decided by a smaller margin or pivotal group of swing voters.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
@@ -1688,6 +1706,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
 </div>
+<p>This graph is a visualization of my previous tibble measuring the net Trump vote for each major party across the swing states and not swing states, demonstrating how much closer to 0 the representatives from swing states tend to vote over members of the same party not from swing states.</p>
+<p>I think much of this may be affected by national environment, including which Congress they each data point is from, as they are from the 115th, 116th, and 117th Congresses. My next steps would be to examine the data similarly across each Congress.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

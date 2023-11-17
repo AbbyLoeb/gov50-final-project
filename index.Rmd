@@ -55,12 +55,19 @@ averages <- averages |>
   mutate(swing = case_when(
     state == "FL" ~ "Swing State", 
     state == "NC" ~ "Swing State", 
-    state == "OH" ~ "Swing State", 
     state == "NV" ~ "Swing State", 
     state == "PA" ~ "Swing State",
     state == "MI" ~ "Swing State",
     state == "WI" ~ "Swing State",
-    state == "AZ" ~ "Swing State"
+    state == "AZ" ~ "Swing State",
+    state == "NH" ~ "Swing State",
+    state == "IA" ~ "Swing State",
+    state == "GA" ~ "Swing State",
+    state == "MN" ~ "Swing State",
+    state == "CO" ~ "Swing State",
+    state == "TX" ~ "Swing State",
+    state == "OH" ~ "Swing State",
+    state == "VA" ~ "Swing State",
   )) |>
   mutate(swing = if_else(is.na(swing), "Not Swing State", "Swing State")) |>
   mutate(party = case_when(
@@ -77,6 +84,9 @@ averages <- averages |>
   subset(party == "Democrat" | party == "Republican")
 ``` 
 
+In this chunk, I first made a new variable which denotes whether a state is a swing state or not swing state by the standards of the 2020 Presidential election. For this, I used the states that CNN Politics considered battlegrounds, regardless of margin. I then mutated the party names to standardize them, as some were full party names and some were abbreviated. I dropped all rows without a net Trump vote score, as that is the variable of interest. Finally, I subsetted this data to only include Democrats and Republicans, as both Independents and Libertarians had too few representatives, and these amounts fluctuated across congresses and swing states/not swing states, that I couldn't conclude much from them.
+
+I am using the net Trump vote of each legislator to gather my conclusions. This is the difference of the amount of times a legislator in the House has voted with and against Trump's position on legislation.
 
 ```{r}
 DiM_party<-averages |>
@@ -87,7 +97,7 @@ DiM_party<-averages |>
     values_from = mean_ntv
   )
 
-knitr::kable(DiM_party)
+knitr::kable(DiM_party, col.names = c("Avg. net Trump vote, Democrats", "Avg. net Trump vote, Republicans"))
 
 DiM_swing <- averages |>
   group_by(swing, party) |>
@@ -98,8 +108,15 @@ DiM_swing <- averages |>
   ) |>
   mutate(ntv_diff = `Swing State` - `Not Swing State`)
 DiM_swing
-knitr::kable(DiM_swing)
+knitr::kable(DiM_swing, col.names = c("Party", "Avg. Trump Vote, non-swing states", "Avg. Trump Vote, swing states", "Net Trump Vote Difference"))
 ```
+
+In the first tibble, which is the 1x2 knitted tibble, I measured the average net Trump vote across all legislators of the Democratic and Republican parties. The average net Trump vote is -26.12 across all Democratic legislators, while the net Trump vote for Republican legislators is 22.17.
+
+In the second tibble, which is 2x4, candidates of each party are divided on whether they are from a swing or not swing state, with the difference between these groups reported as well. In this, we can see that Democrats in swing states, with an average net Trump vote of -20.97, is 8.15 units lower than those not frmo swing states who had an average of -29.12. We see a similar pattern among Republicans, as those in swing states had an average net Trump vote of 18.6, 6.76 units lower than the average net Trump vote of Republicans not from swing states, who had an average Trump vote of 25.37. 
+
+In each party, we see that Democrats and Republicans from swing states have an average net Trump vote that is closer to 0, or a net Trump vote score that signifies equally voting with or against the Trump policy on a piece of legislation. This may be due to a desire to appeal to voters that are more ready to switch or run in districts that are decided by a smaller margin or pivotal group of swing voters.
+
 
 ```{r}
 averages |>
@@ -117,7 +134,9 @@ averages |>
 
 ```
 
+This graph is a visualization of my previous tibble measuring the net Trump vote for each major party across the swing states and not swing states, demonstrating how much closer to 0 the representatives from swing states tend to vote over members of the same party not from swing states.
 
+I think much of this may be affected by national environment, including which Congress they each data point is from, as they are from the 115th, 116th, and 117th Congresses. My next steps would be to examine the data similarly across each Congress.
 
 
 
