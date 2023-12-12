@@ -1524,7 +1524,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h2 id="my-data-and-sorting-it">My data and sorting it</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Loading my data</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
 <span><span class='va'>averages</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"averages.csv"</span><span class='op'>)</span></span></code></pre>
 </div>
@@ -1532,7 +1533,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>This is my data, <code>averages</code>. It measures an array of things, including a given person that was in the US House of Representatived during either the 115, 116, or 117 Congress. This covers the four years of Donald Trump’s term, as well as the Congress immediately after. In it is information like each candidates state, district number, and party. Essential to what we will be measuring is the <code>net_trump_vote</code> value, which measures the difference between the percentage of of votes that went to Trump in that district in 2016 minus those that went to Clinton. We will also be looking at the <code>agree_pct</code>, which measures the percentage of votes which the candidate cast during a specific congress that agreed with Trump’s position on legislation. 1 is representative of 100%, that all of their votes agreed with Trump’s position during that specific Congress, and 0 denotes complete disagreement with Trump.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>averages</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## mutating my data to sort it</span></span>
+<span></span>
+<span><span class='va'>averages</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>swing <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
 <span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"FL"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>, </span>
 <span>    <span class='va'>state</span> <span class='op'>==</span> <span class='st'>"NC"</span> <span class='op'>~</span> <span class='st'>"Swing State"</span>, </span>
@@ -1571,7 +1574,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>I am using the agree percentage of each legislator to gather my conclusions. This is the percentage of the total votes the representative cast in which they agreed with Trump’s policy position.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>net_trump_summary</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## summarizing the spread of my dependent variable, vote agreement with trump, via a scatterplot</span></span>
+<span></span>
+<span><span class='va'>net_trump_summary</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>net_trump_vote</span>, y <span class='op'>=</span> <span class='va'>agree_pct</span>, fill <span class='op'>=</span> <span class='va'>party</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_jitter.html'>geom_jitter</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='fl'>21</span>, alpha <span class='op'>=</span> <span class='fl'>0.25</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='st'>"Democrat"</span> <span class='op'>=</span> <span class='st'>"blue"</span>, <span class='st'>"Republican"</span> <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
@@ -1588,7 +1593,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h2 id="calculations-and-results">Calculations and Results</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>DiM_party</span><span class='op'>&lt;-</span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## creating a difference in means of average Trump agreement between members from swing and non-swing states, separated by party</span></span>
+<span></span>
+<span><span class='co'>## Difference in means by party average Trump vote, not accounting for whether members come from swing states.</span></span>
+<span><span class='va'>DiM_party</span><span class='op'>&lt;-</span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_agree <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>agree_pct</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span></span>
@@ -1613,7 +1621,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </tbody>
 </table>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>DiM_swing</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Difference in means by party, measuring the change correlated with being from a swing state or not.</span></span>
+<span><span class='va'>DiM_swing</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>swing</span>, <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_agree <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>agree_pct</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span></span>
@@ -1662,17 +1671,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </tbody>
 </table>
 </div>
-<p>In the first tibble, which is the 1x2 knitted tibble, I measured the average net Trump vote across all legislators of the Democratic and Republican parties. The average net Trump vote is -26.12 across all Democratic legislators, while the net Trump vote for Republican legislators is 22.17.</p>
-<p>In the second tibble, which is 2x4, candidates of each party are divided on whether they are from a swing or not swing state, with the difference between these groups reported as well. In this, we can see that Democrats in swing states, with an average net Trump vote of -20.97, is 8.15 units lower than those not frmo swing states who had an average of -29.12. We see a similar pattern among Republicans, as those in swing states had an average net Trump vote of 18.6, 6.76 units lower than the average net Trump vote of Republicans not from swing states, who had an average Trump vote of 25.37.</p>
-<p>In each party, we see that Democrats and Republicans from swing states have an average net Trump vote that is closer to 0, or a net Trump vote score that signifies equally voting with or against the Trump policy on a piece of legislation. This may be due to a desire to appeal to voters that are more ready to switch or run in districts that are decided by a smaller margin or pivotal group of swing voters.</p>
+<p>In the first knitted tibble, which is the 1x2 knitted tibble, I measured the average agreement with Trump percent across all legislators of the Democratic and Republican parties. The average agreement with Trump vote is 12.415% across all Democratic legislators, while the average Trump vote for Republican legislators is 22.17.</p>
+<p>In the second knitted tibble, which is 2x4, candidates of each party are divided on whether they are from a swing or not swing state, with the difference between these groups reported as well. In this, we can see that Democrats in swing states, with an average agreement with Trump percent of 13.29%, is 1.39 percentage points higher than those not from swing states who had an average of 11.90%. Interestingly, the opposite occurs among Republicans, as those in swing states had an average agreement with Trump of 86.66%, 4.13 percentage points higher than the average agreement with Trump of Republicans not from swing states, who had an average Trump vote of 82.53%.</p>
+<p>In Democrats, we see the expected moderation of views towards a middle average Trump vote that is closer to 50%. However, among Republicans, those from swing states also had a higher average agreement with Trump than Republican members from the House that are not swing states, signaling a more far-right platform for those swing-state Republicans.</p>
+<p>To better understand this trend, we need to dig further.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## making a barplot to visualize the difference in mean Trump agreement across swing state and non-swing state House members, separated by party</span></span>
+<span></span>
+<span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>swing</span>, <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_agree <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>agree_pct</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>party</span>, y <span class='op'>=</span> <span class='va'>mean_agree</span>, fill <span class='op'>=</span> <span class='va'>swing</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>`Swing State` <span class='op'>=</span> <span class='st'>"goldenrod1"</span>, `Not Swing State` <span class='op'>=</span> <span class='st'>"goldenrod"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>`Swing State` <span class='op'>=</span> <span class='st'>"purple"</span>, `Not Swing State` <span class='op'>=</span> <span class='st'>"violet"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
 <span>    x <span class='op'>=</span> <span class='st'>"Party of Officeholder"</span>,</span>
 <span>    y <span class='op'>=</span> <span class='st'>"Mean percent of votes in agreement with Trump"</span>,</span>
@@ -1682,61 +1694,155 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" width="624" /></p>
 </div>
-<p>This graph is a visualization of my previous tibble measuring the net Trump vote for each major party across the swing states and not swing states, demonstrating how much closer to 0 the representatives from swing states tend to vote over members of the same party not from swing states.</p>
-<p>I think much of this may be affected by national environment, including which Congress they each data point is from, as they are from the 115th, 116th, and 117th Congresses. My next steps would be to examine the data similarly across each Congress.</p>
+<p>This graph is a visualization of my previous tibble measuring the average agreement with Trump for each major party across the swing states and not swing states. This demonstrates that the average agreement with Trump among Democrats is slightly higher than their non-swing state party-mates. This signals a moderation among those from these electorally precarious states. The opposite is true among Republicans.</p>
+<p>This may be affected by the national environment and party platforms of candidates, but to better understand these occurences, it may be useful to break the data down into visualizations per congress to see if there are any time-related trends.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## creating similar barplots as above to visualize the difference in mean Trump agreement across swing state and non-swing state House members, separated by party AND congress in order to see whether time may have an effect on the dependent variable.</span></span>
+<span></span>
+<span><span class='co'>## Barplot for 115th Congress</span></span>
+<span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>congress</span> <span class='op'>==</span> <span class='fl'>115</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>swing</span>, <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_agree <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>agree_pct</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>party</span>, y <span class='op'>=</span> <span class='va'>mean_agree</span>, fill <span class='op'>=</span> <span class='va'>swing</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>`Swing State` <span class='op'>=</span> <span class='st'>"goldenrod1"</span>, `Not Swing State` <span class='op'>=</span> <span class='st'>"goldenrod"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>`Swing State` <span class='op'>=</span> <span class='st'>"hotpink"</span>, `Not Swing State` <span class='op'>=</span> <span class='st'>"pink1"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
 <span>    x <span class='op'>=</span> <span class='st'>"Party of Officeholder"</span>,</span>
 <span>    y <span class='op'>=</span> <span class='st'>"Mean percent of votes in agreement with Trump"</span>,</span>
-<span>    title <span class='op'>=</span> <span class='st'>"Average votes in accordance with Trump for 115-117 Congress"</span>,</span>
+<span>    title <span class='op'>=</span> <span class='st'>"Average votes in accordance with Trump for 115th Congress"</span>,</span>
 <span>    caption <span class='op'>=</span> <span class='st'>"Source: FiveThirtyEight"</span></span>
 <span>  <span class='op'>)</span></span></code></pre>
 </div>
 <img src="index_files/figure-html5/unnamed-chunk-6-1.png" width="624" />
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Barplot for 116th Congress</span></span>
+<span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>congress</span> <span class='op'>==</span> <span class='fl'>116</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>swing</span>, <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_agree <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>agree_pct</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>party</span>, y <span class='op'>=</span> <span class='va'>mean_agree</span>, fill <span class='op'>=</span> <span class='va'>swing</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>`Swing State` <span class='op'>=</span> <span class='st'>"goldenrod1"</span>, `Not Swing State` <span class='op'>=</span> <span class='st'>"goldenrod"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>`Swing State` <span class='op'>=</span> <span class='st'>"hotpink"</span>, `Not Swing State` <span class='op'>=</span> <span class='st'>"pink1"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
 <span>    x <span class='op'>=</span> <span class='st'>"Party of Officeholder"</span>,</span>
 <span>    y <span class='op'>=</span> <span class='st'>"Mean percent of votes in agreement with Trump"</span>,</span>
-<span>    title <span class='op'>=</span> <span class='st'>"Average votes in accordance with Trump for 115-117 Congress"</span>,</span>
+<span>    title <span class='op'>=</span> <span class='st'>"Average votes in accordance with Trump for 116th Congress"</span>,</span>
 <span>    caption <span class='op'>=</span> <span class='st'>"Source: FiveThirtyEight"</span></span>
 <span>  <span class='op'>)</span></span></code></pre>
 </div>
 <img src="index_files/figure-html5/unnamed-chunk-6-2.png" width="624" />
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>##Barplot for 117th Congress</span></span>
+<span><span class='va'>averages</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>congress</span> <span class='op'>==</span> <span class='fl'>117</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>swing</span>, <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_agree <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>agree_pct</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>party</span>, y <span class='op'>=</span> <span class='va'>mean_agree</span>, fill <span class='op'>=</span> <span class='va'>swing</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>`Swing State` <span class='op'>=</span> <span class='st'>"goldenrod1"</span>, `Not Swing State` <span class='op'>=</span> <span class='st'>"goldenrod"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>`Swing State` <span class='op'>=</span> <span class='st'>"hotpink"</span>, `Not Swing State` <span class='op'>=</span> <span class='st'>"pink1"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
 <span>    x <span class='op'>=</span> <span class='st'>"Party of Officeholder"</span>,</span>
 <span>    y <span class='op'>=</span> <span class='st'>"Mean percent of votes in agreement with Trump"</span>,</span>
-<span>    title <span class='op'>=</span> <span class='st'>"Average votes in accordance with Trump for 115-117 Congress"</span>,</span>
+<span>    title <span class='op'>=</span> <span class='st'>"Average votes in accordance with Trump for 117th Congress"</span>,</span>
 <span>    caption <span class='op'>=</span> <span class='st'>"Source: FiveThirtyEight"</span></span>
 <span>  <span class='op'>)</span></span></code></pre>
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-6-3.png" width="624" /></p>
 </div>
+<p>In the first graph, Average votes in accordance with Trump for 115th Congress, we see my initial hypothesis of swing states having, on average, more moderate candidates displayed. For Democrats of this Congress, those from a swing state tended to vote slightly more in accordance with Trump compared to their non-swing state partymates by about 5 percentage points. With Republicans we also see moderation, with swing state Republican Representatives voting with Trump about 1 percentage point less than non-swing state Republicans, possibly signaling a slight moderation.</p>
+<p>In the graph Average votes in accordance with Trump for 116th Congress, we see slightly different patterns emerging. swing state Democrats still vote more in accordance with Trump versus non-swing state Democrats by about 1%, still showing an apparent moderation but on a much smaller scale. In Republicans, we see the opposite from what we saw during the 115th Congress. Swing state Republicans tend to vote with Trump 3% more than their non-swing state</p>
+<p>It is hard to discern complete data from the third graph, Average votes in accordance with Trump for 117th Congress, as it is an incomplete set of agreement statistics, accounting for the lack of any data on Democrats. However, in this data we see an even wider gap between swing state Republicans and non-swing state Republicans, as those from swing states voted with Trump 13 percentage points more than non-swing state Republicans.</p>
+<p>This increasingly right-leaning swing state Republican voting pattern may be due to the fact that moderation of views became less important during and after Trump’s presidency. Instead, many Republicans tried to, in a way, out-Trump each other as the ideal candidate to win a seat, almost especially for seat challengers in swing states as a tactic to stand out. This may account for the increasingly right-leaning swing state group of Republicans over those not from swing states, who may not have had to make as much of a standout platform because their election was much more assured.</p>
+<p>Comparatively, we see both swing state and non-swing state Democrats vote less with Trump over time. This may be due to the fact that, during and after the 2018 midterms, a central facet of the Democratic platform was pure opposition to Trump and the percieved Republican stance on issues.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>averages_dem</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## creating a differences in differences table to see how the difference of average Trump vote agreement between members from swing states and non-swing states for each party changes over time (between each Congress). This table will have differences between each set of Congress (115 to 116 and 116 to 117) as well as overall difference in differences measure.</span></span>
+<span></span>
+<span><span class='va'>DiD_swing</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>swing</span>, <span class='va'>congress</span>, <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_agree <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>agree_pct</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span></span>
+<span>    names_from <span class='op'>=</span> <span class='va'>swing</span>,</span>
+<span>    values_from <span class='op'>=</span> <span class='va'>mean_agree</span></span>
+<span>  <span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>agree_diff <span class='op'>=</span> <span class='va'>`Swing State`</span> <span class='op'>-</span> <span class='va'>`Not Swing State`</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>!</span><span class='va'>`Not Swing State`</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>!</span><span class='va'>`Swing State`</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span></span>
+<span>    names_from <span class='op'>=</span> <span class='va'>congress</span>,</span>
+<span>    values_from <span class='op'>=</span> <span class='va'>agree_diff</span></span>
+<span>  <span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>!</span><span class='va'>`0`</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span>    <span class='st'>"15_16_diff"</span> <span class='op'>=</span> <span class='va'>`116`</span><span class='op'>-</span><span class='va'>`115`</span>,</span>
+<span>    <span class='st'>"16_17_diff"</span> <span class='op'>=</span> <span class='va'>`117`</span> <span class='op'>-</span> <span class='va'>`116`</span>,</span>
+<span>    <span class='st'>"overall_diff"</span> <span class='op'>=</span> <span class='va'>`117`</span> <span class='op'>-</span> <span class='va'>`115`</span></span>
+<span>    <span class='op'>)</span> </span>
+<span><span class='va'>DiD_swing</span></span></code></pre>
+</div>
+<pre><code># A tibble: 2 × 7
+  party     `115`   `116` `117` `15_16_diff` `16_17_diff` overall_diff
+  &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+1 Democ…  0.0476  0.00664 0          -0.0409     -0.00664      -0.0476
+2 Repub… -0.00588 0.0275  0.130       0.0334      0.102         0.136 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>DiD_swing</span>, col.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Party"</span>, <span class='st'>"Avg. Trump Vote Difference, 115th Congress"</span>, <span class='st'>"Avg. Trump Vote Difference, 116th Congress"</span>, <span class='st'>"Avg. Trump Vote Difference, 117th Congress"</span>, <span class='st'>"Avg. Trump Vote Diff. Change, 116th from 115th Congress"</span>, <span class='st'>"Avg. Trump Vote Diff. Change, 117th from 116th Congress"</span>, <span class='st'>"Avg. Overall Trump Vote Change Difference"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<table>
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 19%" />
+<col style="width: 19%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Party</th>
+<th style="text-align: right;">Avg. Trump Vote Difference, 115th Congress</th>
+<th style="text-align: right;">Avg. Trump Vote Difference, 116th Congress</th>
+<th style="text-align: right;">Avg. Trump Vote Difference, 117th Congress</th>
+<th style="text-align: right;">Avg. Trump Vote Diff. Change, 116th from 115th Congress</th>
+<th style="text-align: right;">Avg. Trump Vote Diff. Change, 117th from 116th Congress</th>
+<th style="text-align: right;">Avg. Overall Trump Vote Change Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Democrat</td>
+<td style="text-align: right;">0.0475515</td>
+<td style="text-align: right;">0.0066433</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">-0.0409082</td>
+<td style="text-align: right;">-0.0066433</td>
+<td style="text-align: right;">-0.0475515</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Republican</td>
+<td style="text-align: right;">-0.0058801</td>
+<td style="text-align: right;">0.0274906</td>
+<td style="text-align: right;">0.1296472</td>
+<td style="text-align: right;">0.0333707</td>
+<td style="text-align: right;">0.1021566</td>
+<td style="text-align: right;">0.1355273</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In the first three columns of this chart, we see the difference between the swing state and non-swing state candidates within each Congress, as described above in the graphs. In the latter three columns, we can see how these differences in votes in accordance with Trump change between Congresses.</p>
+<p>For Democrats, due to the lack of data for the 117th Congress, the only change we are really interested in is the -4.09 percentage point decrease in the difference of the average votes in accordance with Trump between swing state and non-swing state Representatives from the 115th to the 116th Congress. This signals that, coinciding with Trump being president and possibly due to the electorate reaction of those policies, Democrats became more uniform in their opposition to Trump regardless of where they were elected from.</p>
+<p>For Republicans, the most accurate data is the same frame, the percentage point incrase of 3.34 in the difference of the average votes in accordance with Trump between swing state and non-swing state Representatives from the 115th to the 116th Congress. This signals that, with Trump in office, swing state Republicans relative to their non-swing state partymates actually grew more right leaning in their agreement with Trump. This may be due to a perceived popularity of Trump-style Republicanism that emboldened these vulnerable Republicans to move rightwards. This may also be due to the unpopularity of moderate swing state Republicans, such as those who voted in favor of the impeachment of Trump, many of whom then went on to either went on to lose reelection or not seek it at all. With this, these swing state Republicans may have perceived that they would have better election odds to align themselves with Trump and his particular brand of politics, which was dominating the party at that time.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Creating linear regressions that measures the correlation between being from a swing state and the agree percent of representatives, controlling for the net Trump 2016 vote margin and which Congress the data point is from. I am making two separate regressions, one for each party, as they so far appear to have different trends, so I beleiv it would be more valuable to isolate them by party in different regressions.</span></span>
+<span></span>
+<span><span class='co'>## subsetting</span></span>
+<span></span>
+<span><span class='va'>averages_dem</span> <span class='op'>&lt;-</span> <span class='va'>averages</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>party</span> <span class='op'>==</span> <span class='st'>'Democrat'</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>averages_dem</span></span></code></pre>
@@ -1780,7 +1886,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 # ℹ 4 more variables: agree_pct &lt;dbl&gt;, predicted_agree &lt;dbl&gt;,
 #   net_trump_vote &lt;dbl&gt;, swing &lt;chr&gt;</code></pre>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>dem_swing_change</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>agree_pct</span> <span class='op'>~</span> <span class='va'>swing</span> <span class='op'>+</span> <span class='va'>net_trump_vote</span> <span class='op'>+</span> <span class='va'>votes</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>congress</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>averages_dem</span><span class='op'>)</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## My regressions</span></span>
+<span></span>
+<span><span class='va'>dem_swing_change</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>agree_pct</span> <span class='op'>~</span> <span class='va'>swing</span> <span class='op'>+</span> <span class='va'>net_trump_vote</span> <span class='op'>+</span> <span class='va'>votes</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>congress</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>averages_dem</span><span class='op'>)</span></span>
 <span><span class='va'>dem_swing_change</span></span></code></pre>
 </div>
 <pre><code>
@@ -1818,10 +1926,22 @@ as.factor(congress)117
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/rstudio/tinytex'>tinytex</a></span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'>## my labels</span></span>
+<span></span>
+<span><span class='va'>var_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span>  <span class='st'>"(Intercept)"</span> <span class='op'>=</span> <span class='st'>"(Intercept)"</span>,</span>
+<span>  <span class='st'>"swingSwing State"</span> <span class='op'>=</span> <span class='st'>"Swing State District"</span>,</span>
+<span>  <span class='st'>"net_trump_vote"</span> <span class='op'>=</span> <span class='st'>"Trump Vote Margin, 2016"</span>,</span>
+<span>  <span class='st'>"votes"</span> <span class='op'>=</span> <span class='st'>"Number of votes cast by legislator"</span>, </span>
+<span>  <span class='st'>"as.factor(congress)115"</span> <span class='op'>=</span> <span class='st'>"Member during 115th Congress"</span>,</span>
+<span>  <span class='st'>"as.factor(congress)116"</span> <span class='op'>=</span> <span class='st'>"Member during 116th Congress"</span>,</span>
+<span>  <span class='st'>"as.factor(congress)117"</span> <span class='op'>=</span> <span class='st'>"Member during 117th Congress"</span></span>
+<span><span class='op'>)</span></span>
+<span></span>
 <span><span class='fu'>modelsummary</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/modelsummary/man/modelsummary.html'>modelsummary</a></span><span class='op'>(</span><span class='va'>dem_swing_change</span>,</span>
 <span>                           statistic <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"s.e. = {std.error}"</span>,</span>
 <span>                                         <span class='st'>"p = {p.value}"</span><span class='op'>)</span>,</span>
-<span>                           gof_map <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nobs"</span>, <span class='st'>"r.squared"</span>, <span class='st'>"adj.r.squared"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+<span>                           gof_map <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nobs"</span>, <span class='st'>"r.squared"</span>, <span class='st'>"adj.r.squared"</span><span class='op'>)</span>, coef_map <span class='op'>=</span> <span class='va'>var_labels</span><span class='op'>)</span></span></code></pre>
 </div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -1858,7 +1978,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-swingSwing State
+Swing State District
 </td>
 <td style="text-align:center;">
 0.007
@@ -1880,7 +2000,7 @@ p = 0.131
 </tr>
 <tr>
 <td style="text-align:left;">
-net_trump_vote
+Trump Vote Margin, 2016
 </td>
 <td style="text-align:center;">
 0.001
@@ -1902,7 +2022,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-votes
+Number of votes cast by legislator
 </td>
 <td style="text-align:center;">
 0.000
@@ -1924,7 +2044,7 @@ p = 0.760
 </tr>
 <tr>
 <td style="text-align:left;">
-as.factor(congress)115
+Member during 115th Congress
 </td>
 <td style="text-align:center;">
 0.100
@@ -1946,7 +2066,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-as.factor(congress)116
+Member during 116th Congress
 </td>
 <td style="text-align:center;">
 −0.061
@@ -1968,7 +2088,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-as.factor(congress)117
+Member during 117th Congress
 </td>
 <td style="text-align:center;">
 −0.157
@@ -2018,7 +2138,7 @@ R2 Adj.
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>modelsummary</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/modelsummary/man/modelsummary.html'>modelsummary</a></span><span class='op'>(</span><span class='va'>rep_swing_change</span>,</span>
 <span>                           statistic <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"s.e. = {std.error}"</span>,</span>
 <span>                                         <span class='st'>"p = {p.value}"</span><span class='op'>)</span>,</span>
-<span>                           gof_map <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nobs"</span>, <span class='st'>"r.squared"</span>, <span class='st'>"adj.r.squared"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+<span>                           gof_map <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nobs"</span>, <span class='st'>"r.squared"</span>, <span class='st'>"adj.r.squared"</span><span class='op'>)</span>, coef_map <span class='op'>=</span> <span class='va'>var_labels</span><span class='op'>)</span></span></code></pre>
 </div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -2055,7 +2175,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-swingSwing State
+Swing State District
 </td>
 <td style="text-align:center;">
 0.057
@@ -2077,7 +2197,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-net_trump_vote
+Trump Vote Margin, 2016
 </td>
 <td style="text-align:center;">
 0.003
@@ -2099,7 +2219,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-votes
+Number of votes cast by legislator
 </td>
 <td style="text-align:center;">
 0.000
@@ -2121,7 +2241,7 @@ p = 0.032
 </tr>
 <tr>
 <td style="text-align:left;">
-as.factor(congress)115
+Member during 115th Congress
 </td>
 <td style="text-align:center;">
 0.046
@@ -2143,7 +2263,7 @@ p = 0.006
 </tr>
 <tr>
 <td style="text-align:left;">
-as.factor(congress)116
+Member during 116th Congress
 </td>
 <td style="text-align:center;">
 0.000
@@ -2165,7 +2285,7 @@ p = 0.998
 </tr>
 <tr>
 <td style="text-align:left;">
-as.factor(congress)117
+Member during 117th Congress
 </td>
 <td style="text-align:center;">
 −0.239
@@ -2212,8 +2332,14 @@ R2 Adj.
 </tbody>
 </table>
 </div>
+<p>Here, there are two linear regressions, the first measuring the relationship between being elected from a swing state and average agreement with Trump for Democrats, and the second for Republicans.</p>
+<p>For Democrats, those from a swing state tended to vote with Trump 0.7 percentage points more holding congress, number of votes cast in their term, and Trump’s 2016 net margin in their district constant. However, with a p-value of 0.131, this doesn’t appear significant. We, however, do see that notwithstanding the correlation between swing state and average Trump agreement, Democratic members from the 116th Congress voted with Trump 6.1 percent less than the baseline intercept of 18.4%, with a p-value of less than 0.1%, meaning that this value is statistically significant. This signlas a possible downward trend in Democratic agreement with Trump’s policy positions.</p>
+<p>This may possibly be due to the national environment that allowed the blue wave of 2018 to occur, in which there was a massive anti-Trump, and more broadly anti-Republican, election results. From this, Democrats may have seen that voting against Trump is a way to maintain Democratic support.</p>
+<p>Comparatively, for Republicans who are described in the second regression, members from a swing state tended to vote with Trump 5.7 percentage points more often than those not from swing states, holding congress, number of votes cast in their term, and Trump’s 2016 net margin in their district constant. This value has a p-value of 0.1%, signaling that it statistically significant and that this change would not happen purely by chance. Further if we look at the average Trump agreement change from the baseline of 76.6% agreement, notwithstanding the correlation between swing state and average Trump agreement, we see an overall decline in average Trump support by 23.9 percentage points. The p-value for this is less than 0.1%, so it is highly unlikely this occurred by chance. However, it is important to note that this change is based on a small, incomplete sample of Representatives of the 117th Congress. If we go back to the 116th Congress, we se a 0 percentage point change from the baseline, swing state status notwithstanding, with a p-value of 99.8%, we cannot gather that swing state status has an effect when looking at the change going into this year.</p>
 <h2 id="conclusion">Conclusion</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>From my findings, it appears that Democratic members of the house from swing states were more moderate, but throughout the course of Trump’s presidency they shifted to voting in line with their non-swing state Democratic colleagues. This initially proved my hypothesis true, but as voting patterns shifted I could no longer apply my hypothesis to the situation. Among Republicans, my hypothesis was initially marginally true, with swing state Republicans being marginally more moderate than their non-swing state colleagues. However, we saw them become less moderate than their swing state colleagues by the 116th Congress, and even more so in the 117th Congress. My data was also limited by the fact that there was incomplete data for the 117th Congress. I couldn’t draw conclusions among Democrats due to this, and could only speculate for Republicans, but with the data so lacking I couldn’t confidently make a conclusion transferable to the voting patterns of all Republican members of Congress during that time. I think it would be very interesting to have a complete set of data from the 117th Congress, and data from the current and future Congresses, especially depending on whether Trump wins the Republican nomination and/or presidency in 2024, or fades from influence, and see how the Republican party’s platform adjusts to these changes and Democrats account for the reaction to this.</p>
+<p>I would guess the patterns we see so far are explained by the national tension around Trump-endorsed positions. There is a movement among the Republican party to follow Trump’s policy positions in order to be competitive, which may explain the rise in swing-state Republican agreement we saw between the 115th and 116th Congress relative to their non-swing state colleagues, and further in the 117th Congress, although that is too little data to draw any real conclusions. Among Democrats, we see the reaction to this movement, as a central facet of the Democratic party during the presidency was to act against policies endorsed by the administration, which could explain the unifying we saw between swing state and non-swing state agreement averages.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
