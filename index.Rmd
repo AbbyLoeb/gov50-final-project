@@ -7,48 +7,21 @@ output:
     self_contained: false
 ---
 
+## Introduction
+
+My research question is whether being in a swing state makes a US House Representative quantifiably more moderate in voting patterns relative to their party. I am interested in this because there is discussion in media and political forums that being from a swing state, in a way, produces more moderate candidates who are less far from the political center sine they are in a more precarious electoral position. These arguments seem to make sense, but are all really abstract when trying to truly get a sense of what they mean by more moderate, how this relates to being from a swing state, and what can be called the political center. In that sense, it is hard to test this theory, but using my data I hope to measure whether US House Representatives vote in a more moderate manner relative to their party if they are from a swing state.
+
+
+## My data and sorting it
+
 ```{r}
 library(tidyverse)
 library(ggplot2)
 averages <- read_csv("averages.csv")
 ```
 
-## Dataset description
+This is my data, `averages`. It measures an array of things, including a given person that was in the US House of Representatived during either the 115, 116, or 117 Congress. This covers the four years of Donald Trump's term, as well as the Congress immediately after. In it is information like each candidates state, district number, and party. Essential to what we will be measuring is the `net_trump_vote` value, which measures the difference between the percentage of of votes that went to Trump in that district in 2016 minus those that went to Clinton. We will also be looking at the `agree_pct`, which measures the percentage of votes which the candidate cast during a specific congress that agreed with Trump's position on legislation. 1 is representative of 100%, that all of their votes agreed with Trump's position during that specific Congress, and 0 denotes complete disagreement with Trump.
 
-Does being elected from a swing state change how often a congressional member votes in alignment with Trump? I plan to study how often various representatives vote in alignment with Donald Trump's stated policy positions. I hypothesize that congressional members from swing states will vote closer to the median Trump vote, for both parties relative to the overall party median Trump vote. I expect that these members will, on average, vote closer to the overall median in order to win re-election in a competitive seat where a member must apply to undecided or voters who feel as though they are in the middle of each party ideologically. I'll be looking at the `state` and `net_trump_vote` variables of each member. The `net_trump_vote` is measured on a scale of -1 to 1, where -1 are more votes against Trump. I also may group these members by `state` and `party` and then analyze the `net_trump_vote` across these groups to get a better understanding of how a member's party and and state effect their voting patterns. I expect that the difference in the `net_trump_vote` between the two `party` groups within a singular swing state will be less than the respective `party` `net_trump_vote` in non-swing states. My hypothesis would be disproven if there was no considerable difference in the difference of the `net_trump_vote` between parties in swing states versus non-swing states.
-
-
-
-## Milestone 3
-
-```{r}
-library(ggplot2)
-library(tidyverse)
-library(dplyr)
-averages <- read_csv("averages.csv")
-averages
-```
-```{r}
-average_agree <- averages |>
-  group_by(state) |>
-  summarize(avg_agree_pct = mean(agree_pct))
-
-average_agree |>
-  slice_max(avg_agree_pct, n = 50) |>
-  ggplot(mapping = aes(x = avg_agree_pct, y = state)) +
-  geom_col() +
-  labs(
-    x = "Average vote percent with Trump by state",
-    y = "State",
-    title = "Average agreement with Trump by state"
-  )
-```
-
-These graphs show no obvious pattern based on state alone, with the average Trump vote aligning with the overall political tilt of the specific state. More Democratic states have representatives who tend to vote less with Trump on average, and Republican-leaning states are represented by House members who tend to vote more with Trump on average.
-
-This makes clear that we need to further break down the data in swing states by party and/or member to understand how members from swing states vote differently from other members of their party and whether this correlates with being elected by a district in a swing state or not.
-
-## Milestone 4
 
 ```{r}
 averages <- averages |>
@@ -79,36 +52,59 @@ averages <- averages |>
     party == "Independent" ~ "Independent",
     party == "Libertarian" ~ "Libertarian"
   )) |>
-  drop_na(net_trump_vote, party)
+  drop_na(agree_pct, net_trump_vote, party)
 averages <- averages |>
   subset(party == "Democrat" | party == "Republican")
 ``` 
 
-In this chunk, I first made a new variable which denotes whether a state is a swing state or not swing state by the standards of the 2020 Presidential election. For this, I used the states that CNN Politics considered battlegrounds, regardless of margin. I then mutated the party names to standardize them, as some were full party names and some were abbreviated. I dropped all rows without a net Trump vote score, as that is the variable of interest. Finally, I subsetted this data to only include Democrats and Republicans, as both Independents and Libertarians had too few representatives, and these amounts fluctuated across congresses and swing states/not swing states, that I couldn't conclude much from them.
+In this chunk, I first made a new variable which denotes whether a state is a swing state or not swing state by the standards of the 2020 Presidential election. For this, I used the states that CNN Politics considered battlegrounds, regardless of margin. It is important to note, then, that this includes states like Texas which are considered swing because of their possibility to elect Demcorats, despite consistently voting Republican when taking the entire state into account. 
 
-I am using the net Trump vote of each legislator to gather my conclusions. This is the difference of the amount of times a legislator in the House has voted with and against Trump's position on legislation.
+I then mutated the party names to standardize them, as some were full party names and some were abbreviated. I dropped all rows without a net Trump vote score, an agree percent, or party listed, as these are the variable of interest in this project. 
+
+Finally, I subsetted this data to only include Democrats and Republicans, as both Independents and Libertarians had too few representatives, and these amounts fluctuated across congresses and swing states/not swing states, that I couldn't conclude much from them.
+
+I am using the agree percentage of each legislator to gather my conclusions. This is the percentage of the total votes the representative cast in which they agreed with Trump's policy position.
+
+```{r}
+net_trump_summary <- averages |>
+  ggplot(mapping = aes(x = net_trump_vote, y = agree_pct, fill = party)) +
+  geom_jitter(shape = 21, alpha = 0.25) +
+  scale_fill_manual(values = aes("Democrat" = "blue", "Republican" = "red")) +
+  labs(x = "District Net Trump Vote in 2016 Pres. Election",
+       y = "Representative Percent Vote Agreement with Trump",
+    caption = "Source: FiveThirtyEight")
+
+net_trump_summary
+```
+
+This graph shows the `agree_pct`, or percentage of total votes cast that agree with Trump's policy stance, dependent on the net Trump vote share of their disrict in 2016, or `net_trump_vote`. It shows that the vast majority of districts whose net Trump vote was below zero, or that he got a smaller share of votes than Clinton, elected Representatives that agreed with Trump less than half of the time, and who were mostly Democrats. In districts where Trump got a larger vote share than Clinton, Representatives tended to vote in agreement with Trump more than half of the time, and were overwhelmingly Republican. 
+
+The limitations of this graph is that it doesn't distinguish between swing and non swing states. I described a general pattern in the previous paragraph, but we can see, for example, that some Republicans break the trend and tend to vote more against Trump than they do with him, and some Democrats the opposite. Further, we see how these trend-breaking points appear more when the net Trump vote of a district is closer to zero, signaling a smaller electoral margin. However, we do not know if there is any pattern of these standout points representing Representatives from swing states, or any other pattern.
+
+## Calculations and Results
+
 
 ```{r}
 DiM_party<-averages |>
   group_by(party) |>
-  summarize(mean_ntv = mean(net_trump_vote)) |>
+  summarize(mean_agree = mean(agree_pct)) |>
   pivot_wider(
     names_from = party,
-    values_from = mean_ntv
+    values_from = mean_agree
   )
 
-knitr::kable(DiM_party, col.names = c("Avg. net Trump vote, Democrats", "Avg. net Trump vote, Republicans"))
+knitr::kable(DiM_party, col.names = c("Avg. Agree with Trump, Democrats", "Avg. Agree with Trump, Republicans"))
 
 DiM_swing <- averages |>
   group_by(swing, party) |>
-  summarize(mean_ntv = mean(net_trump_vote)) |>
+  summarize(mean_agree = mean(agree_pct)) |>
   pivot_wider(
     names_from = swing,
-    values_from = mean_ntv
+    values_from = mean_agree
   ) |>
   mutate(ntv_diff = `Swing State` - `Not Swing State`)
 DiM_swing
-knitr::kable(DiM_swing, col.names = c("Party", "Avg. Trump Vote, non-swing states", "Avg. Trump Vote, swing states", "Net Trump Vote Difference"))
+knitr::kable(DiM_swing, col.names = c("Party", "Avg. Agree with Trump, non-swing states", "Avg. Agree with Trump, swing states", "Net Trump Agree Difference"))
 ```
 
 In the first tibble, which is the 1x2 knitted tibble, I measured the average net Trump vote across all legislators of the Democratic and Republican parties. The average net Trump vote is -26.12 across all Democratic legislators, while the net Trump vote for Republican legislators is 22.17.
@@ -118,16 +114,16 @@ In the second tibble, which is 2x4, candidates of each party are divided on whet
 In each party, we see that Democrats and Republicans from swing states have an average net Trump vote that is closer to 0, or a net Trump vote score that signifies equally voting with or against the Trump policy on a piece of legislation. This may be due to a desire to appeal to voters that are more ready to switch or run in districts that are decided by a smaller margin or pivotal group of swing voters.
 
 
-```{r}
+```{r} 
 averages |>
   group_by(swing, party) |>
-  summarize(mean_ntv = mean(net_trump_vote)) |>
-  ggplot(aes(x = party, y = mean_ntv, fill = swing)) +
-  geom_col() +
+  summarize(mean_agree = mean(agree_pct)) |>
+  ggplot(aes(x = party, y = mean_agree, fill = swing)) +
+  geom_col(position = "dodge") +
   scale_fill_manual(values = c(`Swing State` = "goldenrod1", `Not Swing State` = "goldenrod")) +
   labs(
     x = "Party of Officeholder",
-    y = "Mean number of votes in accordance with Trump",
+    y = "Mean percent of votes in agreement with Trump",
     title = "Average votes in accordance with Trump for 115-117 Congress",
     caption = "Source: FiveThirtyEight"
   )
@@ -138,6 +134,81 @@ This graph is a visualization of my previous tibble measuring the net Trump vote
 
 I think much of this may be affected by national environment, including which Congress they each data point is from, as they are from the 115th, 116th, and 117th Congresses. My next steps would be to examine the data similarly across each Congress.
 
+```{r}
+averages |>
+  filter(congress == 115) |>
+  group_by(swing, party) |>
+  summarize(mean_agree = mean(agree_pct)) |>
+  ggplot(aes(x = party, y = mean_agree, fill = swing)) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c(`Swing State` = "goldenrod1", `Not Swing State` = "goldenrod")) +
+  labs(
+    x = "Party of Officeholder",
+    y = "Mean percent of votes in agreement with Trump",
+    title = "Average votes in accordance with Trump for 115-117 Congress",
+    caption = "Source: FiveThirtyEight"
+  )
+
+averages |>
+  filter(congress == 116) |>
+  group_by(swing, party) |>
+  summarize(mean_agree = mean(agree_pct)) |>
+  ggplot(aes(x = party, y = mean_agree, fill = swing)) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c(`Swing State` = "goldenrod1", `Not Swing State` = "goldenrod")) +
+  labs(
+    x = "Party of Officeholder",
+    y = "Mean percent of votes in agreement with Trump",
+    title = "Average votes in accordance with Trump for 115-117 Congress",
+    caption = "Source: FiveThirtyEight"
+  )
+
+averages |>
+  filter(congress == 117) |>
+  group_by(swing, party) |>
+  summarize(mean_agree = mean(agree_pct)) |>
+  ggplot(aes(x = party, y = mean_agree, fill = swing)) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c(`Swing State` = "goldenrod1", `Not Swing State` = "goldenrod")) +
+  labs(
+    x = "Party of Officeholder",
+    y = "Mean percent of votes in agreement with Trump",
+    title = "Average votes in accordance with Trump for 115-117 Congress",
+    caption = "Source: FiveThirtyEight"
+  )
+```
+
+```{r}
+averages_dem <- averages |>
+  filter(party == 'Democrat')
+
+averages_dem
+
+averages_rep <- averages |>
+  filter(party == 'Republican')
+
+averages_rep
+
+dem_swing_change <- lm(agree_pct ~ swing + net_trump_vote + votes + as.factor(congress), data = averages_dem)
+dem_swing_change
+
+rep_swing_change <- lm(agree_pct ~ swing + net_trump_vote + votes + as.factor(congress), data = averages_rep)
+rep_swing_change
+
+library(tinytex)
+
+modelsummary::modelsummary(dem_swing_change,
+                           statistic = c("s.e. = {std.error}",
+                                         "p = {p.value}"),
+                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
+
+modelsummary::modelsummary(rep_swing_change,
+                           statistic = c("s.e. = {std.error}",
+                                         "p = {p.value}"),
+                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
+```
+
+## Conclusion
 
 
 
